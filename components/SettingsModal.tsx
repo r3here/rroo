@@ -67,6 +67,13 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, onClose }) => {
     alert("代码已复制到剪贴板！");
   };
 
+  const getTabClass = (tabName: string) => {
+    const base = "flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors";
+    const active = "text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-white dark:bg-slate-800/50";
+    const inactive = "text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200";
+    return activeTab === tabName ? `${base} ${active}` : `${base} ${inactive}`;
+  };
+
   const workerCode = `
 export default {
   async fetch(request, env, ctx) {
@@ -179,7 +186,7 @@ export default {
       return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
   },
-};
+};`;
 
   if (!isOpen) return null;
 
@@ -190,11 +197,11 @@ export default {
       <div className="relative bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in">
         
         <div className="flex border-b border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/50 overflow-x-auto">
-          <button onClick={() => setActiveTab('general')} className={`flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'general' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-white dark:bg-slate-800/50' : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'}`}>1. 连接配置</button>
-          <button onClick={() => setActiveTab('ai')} className={`flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'ai' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-white dark:bg-slate-800/50' : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'}`}>2. AI 设置</button>
-          <button onClick={() => setActiveTab('deploy-backend')} className={`flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'deploy-backend' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-white dark:bg-slate-800/50' : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'}`}>3. 部署后端</button>
-          <button onClick={() => setActiveTab('deploy-frontend')} className={`flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'deploy-frontend' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-500 bg-white dark:bg-slate-800/50' : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'}`}>4. 部署前端</button>
-          <button onClick={() => setActiveTab('danger')} className={`flex-shrink-0 px-6 py-4 text-sm font-medium transition-colors ${activeTab === 'danger' ? 'text-red-600 dark:text-red-400 border-b-2 border-red-500 bg-red-50 dark:bg-red-900/20' : 'text-gray-500 dark:text-slate-400 hover:text-red-500'}`}>5. 危险区域</button>
+          <button onClick={() => setActiveTab('general')} className={getTabClass('general')}>1. 连接配置</button>
+          <button onClick={() => setActiveTab('ai')} className={getTabClass('ai')}>2. AI 设置</button>
+          <button onClick={() => setActiveTab('deploy-backend')} className={getTabClass('deploy-backend')}>3. 部署后端</button>
+          <button onClick={() => setActiveTab('deploy-frontend')} className={getTabClass('deploy-frontend')}>4. 部署前端</button>
+          <button onClick={() => setActiveTab('danger')} className={getTabClass('danger')}>5. 危险区域</button>
         </div>
 
         <div className="flex-1 overflow-y-auto bg-white dark:bg-slate-900">
